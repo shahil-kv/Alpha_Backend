@@ -1,21 +1,13 @@
-import path from "path";
-import dotenv from "dotenv";
 import express from "express";
-import passport from "passport-google-oauth20";
+import { AUTH } from "routes/auth/auth";
 import { createClient } from "@supabase/supabase-js";
-
-// Configure dotenv path.
-dotenv.config({
-  path: path.resolve(__dirname, "../env/.env.development"),
-});
+import { PORT, SUPA_BASE_API_KEY, SUPA_BASE_URL } from "configs";
 
 // Create express application.
 const APP = express();
-const PORT = process.env.PORT || 4003;
-// Supabase client configuration.
-const SUPA_BASE_URL = String(process.env.SUPA_BASE_URL);
-const SUPA_BASE_API_KEY = String(process.env.SUPA_API_KEY);
 const SUPA_BASE = createClient(SUPA_BASE_URL, SUPA_BASE_API_KEY);
+
+APP.use("/", AUTH);
 
 // Server creation.
 APP.listen(PORT, () => {
